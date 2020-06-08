@@ -28,7 +28,7 @@ def _generate_command_line(
         # ~/.local/bin is not in PATH (when installed with --user)
         # "/usr/bin/python: No module named pip"
         '''
-gcs_copy_url=https://github.com/Ark-kun/gcs_copy_go/releases/download/v0.1/gcs_copy-linux-amd64
+gcs_copy_url=https://github.com/Ark-kun/gcs_copy_go/releases/download/v0.2/gcs_copy-linux-amd64
 bin_dir=/tmp/kfp_bin/
 gcs_copy_path="${bin_dir}/gcs_copy"
 mkdir -p "$bin_dir"
