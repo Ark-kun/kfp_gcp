@@ -28,19 +28,13 @@ def _generate_command_line(
         # ~/.local/bin is not in PATH (when installed with --user)
         # "/usr/bin/python: No module named pip"
         '''
-if ! which gsutil >/dev/null; then
-    sdk_archive_url=https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-290.0.0-linux-x86_64.tar.gz
-    sdk_archive_path=/tmp/google-cloud-sdk.tar.gz
-    wget "$sdk_archive_url" --output-document "$sdk_archive_path" --no-verbose || curl "$sdk_archive_url" --location --output "$sdk_archive_path"
-    mkdir -p /usr/local/gcloud
-    tar -C /usr/local/gcloud -xf "$sdk_archive_path"
-    /usr/local/gcloud/google-cloud-sdk/install.sh --override-components gsutil --usage-reporting false --path-update false --quiet
-    export PATH=/usr/local/gcloud/google-cloud-sdk/bin:$PATH
-
-    # Debug
-    gcloud auth list
-    gsutil version -l
-fi
+gcs_copy_url=https://github.com/Ark-kun/gcs_copy_go/releases/download/v0.1/gcs_copy-linux-amd64
+bin_dir=/tmp/kfp_bin/
+gcs_copy_path="${bin_dir}/gcs_copy"
+mkdir -p "$bin_dir"
+wget "$gcs_copy_url" --output-document "$gcs_copy_path" --no-verbose || curl "$gcs_copy_url" --location --output "$gcs_copy_path"
+chmod +x "$gcs_copy_path"
+export PATH=$PATH:"$bin_dir"
         '''
     ]
     for path in list(input_path_uris.keys()) + list(output_path_uris.keys()):
@@ -52,19 +46,14 @@ fi
     for path, uri in input_path_uris.items():
         # Escaping. Cannot/must not escape URI since it's just a placeholder
         path = path.replace("'", "'\''")  # escaping
-        # !gsutil rsync only works on directories!
-        #code_lines.append("""gsutil cp '{uri}' '{path}'""".format(path=path, uri=uri))
-        #code_lines.append("""gsutil cp -r '{uri}' '{path}'""".format(path=path, uri=uri)) # fails to copy when source is a directory (but the destination is not a directory)
-        #code_lines.append("""gsutil cp -r '{uri}' '{path}' || ( mkdir -p '{path}' && gsutil cp -r '{uri}' '{path}' )""".format(path=path, uri=uri)) # copies, but in wrong place?
-        code_lines.append("""gsutil cp -r '{uri}' '{path}' || ( mkdir -p '{path}' && gsutil rsync -r '{uri}' '{path}' )""".format(path=path, uri=uri))
+        code_lines.append("""gcs_copy '{uri}' '{path}'""".format(path=path, uri=uri))
 
     code_lines.append('''"$0" "$@"''')
 
     for path, uri in output_path_uris.items():
         # Escaping. Cannot/must not escape URI since it's just a placeholder
         path = path.replace("'", "'\''")
-        #code_lines.append("""gsutil cp '{path}' '{uri}'""".format(path=path, uri=uri))
-        code_lines.append("""gsutil cp -r '{path}' '{uri}'""".format(path=path, uri=uri))
+        code_lines.append("""gcs_copy '{path}' '{uri}'""".format(path=path, uri=uri))
 
     full_command_line = [
         'sh', '-ex', '-c', '\n'.join(code_lines)
