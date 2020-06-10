@@ -169,14 +169,7 @@ def _create_caip_pipeline_spec_from_task_spec(
                     #execution_properties={},
                     outputs={
                         output.name: dict(
-                            artifact=dict(
-                                #uri=...,
-                                #kind=dict(
-                                #    file={},
-                                #),
-                                file={},
-                                #custom_properties={},
-                            ),
+                            artifact=_map_output_spec_to_artifact_spec_dict(output),
                             outputUriConfig=dict(
                                 filePath=True, # Not directory
                             ),
@@ -189,6 +182,34 @@ def _create_caip_pipeline_spec_from_task_spec(
                 #dependencies=[...],
             )
     return result_pipeline_spec
+
+
+def _map_output_spec_to_artifact_spec_dict(output):
+    artifact_type = 'file'
+    if output.type:
+        output_type = str(output.type).lower()
+        if output_type.endswith('examples') or output_type in ['csv', 'tsv']:
+            artifact_type = 'dataset'
+        if output_type.endswith('statistics'):
+            artifact_type = 'statistics'
+        if output_type.endswith('schema'):
+            artifact_type = 'schema'
+        if output_type.endswith('model'):
+            artifact_type = 'model'
+        if output_type.endswith('metrics'):
+            artifact_type = 'metrics '
+
+    custom_properties = {
+        'custom:name': {'string_value': str(output.name)},
+    }
+    if output.type:
+        custom_properties['type_name'] = {'string_value': str(output.type)}
+
+    artifact = {
+        artifact_type: {},
+        'custom_properties': custom_properties,
+    }
+    return artifact
 
 
 def compile_pipeline_job_for_caip(
