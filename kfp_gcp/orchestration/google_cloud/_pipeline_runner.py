@@ -245,7 +245,7 @@ def run_pipeline_func_on_google_cloud(
     job_name: str = None,
     mirror_images: bool = True,
     project_id: str = 'managed-pipeline-test',
-    api_host: str = 'test-ml.sandbox.googleapis.com',
+    api_host: str = 'alpha-ml.googleapis.com',
 ) -> dict:
     pipeline_job = compile_pipeline_job_for_caip(
         pipeline_func=pipeline_func,
