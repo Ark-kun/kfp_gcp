@@ -22,12 +22,7 @@ def _generate_command_line(
     if not input_path_uris and not output_path_uris:
         return user_command_line
 
-    code_lines = [
-        #'''which gsutil >/dev/null || python -m pip install gsutil --quiet'''
-        # no gsutil
-        # ~/.local/bin is not in PATH (when installed with --user)
-        # "/usr/bin/python: No module named pip"
-        '''
+    code_lines = '''
 gcs_copy_url=https://github.com/Ark-kun/gcs_copy_go/releases/download/v0.2/gcs_copy-linux-amd64
 bin_dir=/tmp/kfp_bin/
 gcs_copy_path="${bin_dir}/gcs_copy"
@@ -35,8 +30,7 @@ mkdir -p "$bin_dir"
 wget "$gcs_copy_url" --output-document "$gcs_copy_path" --no-verbose || curl "$gcs_copy_url" --location --output "$gcs_copy_path"
 chmod +x "$gcs_copy_path"
 export PATH=$PATH:"$bin_dir"
-        '''
-    ]
+'''.split('\n')
     for path in list(input_path_uris.keys()) + list(output_path_uris.keys()):
         #code_lines.append('''mkdir -p "$(dirname "{path}")"'''.format(path=path))
         dir = str(pathlib.PurePosixPath(path).parent)
@@ -56,7 +50,7 @@ export PATH=$PATH:"$bin_dir"
         code_lines.append("""gcs_copy '{path}' '{uri}'""".format(path=path, uri=uri))
 
     full_command_line = [
-        'sh', '-ex', '-c', '\n'.join(code_lines)
+        'sh', '-ex', '-c', ''.join(line + '\n' for line in code_lines)
     ] + user_command_line
 
     return full_command_line
