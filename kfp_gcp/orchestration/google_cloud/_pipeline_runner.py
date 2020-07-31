@@ -277,7 +277,7 @@ def run_pipeline_func_on_google_cloud(
     logging.info('Submitted job ' + job.job_name)
     try:
         import IPython
-        html = 'Job: <a href="https://pantheon-hourly-sso.corp.google.com/ai-platform/pipelines/runs/{}?project={}" target="_blank" >{}</a>'.format(
+        html = 'Job: <a href="https://pantheon.corp.google.com/ai-platform/pipelines/runs/{}?project={}&mods=caip_pipelines_eap" target="_blank" >{}</a>'.format(
             job_name, project_id, job_name,
         )
         IPython.display.display(IPython.display.HTML(html))
