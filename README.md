@@ -11,7 +11,13 @@ Usually the pipelines are submitted for execution on the Kubeflow Pipelines clus
 This runner allows submitting the pipelines for execution on Google Cloud AI Platform Pipelines.
 
 ## Installation:
-`python3 -m pip install kfp-gcp`
+```
+python3 -m pip install kfp-gcp
+```
+or
+```
+python3 -m pip install https://storage.googleapis.com/managed-pipeline-test-bugbash/kfp_gcp-0.20.7.31.tar.gz
+```
 
 ## Examples:
 
