@@ -125,6 +125,7 @@ def _create_caip_pipeline_spec_from_task_spec(
                         ),
                     )
                     reference_task_arguments[input_name] = resolved_argument
+                    constant_task_arguments[input_name] = "{{{{$.inputs['{}'].value}}}}".format(input_name)
                 else:
                     raise TypeError('Unsupported argument: "{}"'.format(argument))
                 resolved_task_arguments[input_name] = resolved_argument
