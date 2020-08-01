@@ -133,8 +133,7 @@ def _create_caip_pipeline_spec_from_task_spec(
                 # Constant arguments are inlined. In future we could preserve them as property arguments
                 resolved_cmd = _components._resolve_command_line_and_paths(
                     component_spec=task_component_spec,
-                    #arguments=constant_task_arguments,
-                    arguments=resolved_task_arguments,  # Needs to have arguments for all inputs
+                    arguments=constant_task_arguments,
                 )
                 input_path_uris = {
                     path: "{{{{$.inputs['{}'].uri}}}}".format(input_name)
@@ -152,21 +151,11 @@ def _create_caip_pipeline_spec_from_task_spec(
                 )
                 result_container_dict = dict(
                     image=task_container.image,
-                    #command='', # Not supported by the API yet
-                    #args=full_command_line,
                     command=full_command_line,
                 )
                 result_task_dict = dict(
                     container=result_container_dict,
                     inputs=reference_task_arguments,
-                    #{
-                    #    dict(
-                    #        # TODO: Might need to sanitize names
-                    #        name=input_name,
-                    #        value=argument_dict,
-                    #    )
-                    #    for input_name, argument_dict in reference_task_arguments
-                    #},
                     #execution_properties={},
                     outputs={
                         output.name: dict(
