@@ -23,6 +23,13 @@ def _generate_command_line(
         return user_command_line
 
     code_lines = '''
+# Installing wget if it's missing
+if ! which wget && ! which curl; then
+  if apt-get update -qq -o=Dpkg::Use-Pty=0; then
+    apt-get install wget -qq -o=Dpkg::Use-Pty=0
+  fi
+fi
+
 gcs_copy_url=https://github.com/Ark-kun/gcs_copy_go/releases/download/v0.2/gcs_copy-linux-amd64
 bin_dir=/tmp/kfp_bin/
 gcs_copy_path="${bin_dir}/gcs_copy"
