@@ -1,1 +1,1 @@
-from .orchestration.google_cloud._pipeline_runner import run_pipeline_func_on_google_cloud
+from .orchestration.google_cloud._pipeline_runner import run_pipeline

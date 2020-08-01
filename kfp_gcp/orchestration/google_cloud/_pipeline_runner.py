@@ -237,7 +237,7 @@ def compile_pipeline(
     return caip_pipeline_job
 
 
-def run_pipeline_func_on_google_cloud(
+def run_pipeline(
     pipeline_func: Callable,
     arguments: Dict[str, str],
     pipeline_root: str,
