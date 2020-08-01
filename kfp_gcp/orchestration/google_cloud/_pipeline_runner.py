@@ -57,7 +57,7 @@ export PATH=$PATH:"$bin_dir"
         code_lines.append("""gcs_copy '{path}' '{uri}'""".format(path=path, uri=uri))
 
     full_command_line = [
-        'sh', '-ex', '-c', ''.join(line + '\n' for line in code_lines)
+        'sh', '-e', '-c', ''.join(line + '\n' for line in code_lines)
     ] + user_command_line
 
     return full_command_line
