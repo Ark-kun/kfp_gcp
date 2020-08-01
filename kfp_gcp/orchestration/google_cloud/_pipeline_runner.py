@@ -126,7 +126,7 @@ def _create_caip_pipeline_spec_from_task_spec(
                     )
                     reference_task_arguments[input_name] = resolved_argument
                 else:
-                    raise TypeError()
+                    raise TypeError('Unsupported argument: "{}"'.format(argument))
                 resolved_task_arguments[input_name] = resolved_argument
             if isinstance(task_component_spec.implementation, structures.ContainerImplementation):
                 task_container = task_component_spec.implementation.container
