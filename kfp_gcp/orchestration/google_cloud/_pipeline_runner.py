@@ -206,7 +206,7 @@ def _map_output_spec_to_artifact_spec_dict(output):
     return artifact
 
 
-def compile_pipeline_job_for_caip(
+def compile_pipeline(
     pipeline_func: Callable,
     arguments: Dict[str, str],
     pipeline_root: str,
@@ -247,7 +247,7 @@ def run_pipeline_func_on_google_cloud(
     project_id: str = 'managed-pipeline-test',
     api_host: str = 'alpha-ml.googleapis.com',
 ) -> dict:
-    pipeline_job = compile_pipeline_job_for_caip(
+    pipeline_job = compile_pipeline(
         pipeline_func=pipeline_func,
         arguments=arguments,
         pipeline_root=pipeline_root,
