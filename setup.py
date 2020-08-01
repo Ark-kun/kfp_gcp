@@ -17,7 +17,7 @@ import re
 from setuptools import setup
 
 NAME = 'kfp_gcp'
-VERSION = '0.1'
+VERSION = '0.20.07.31'
 
 REQUIRES = [
     'kfp',
