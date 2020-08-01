@@ -97,7 +97,15 @@ def _create_caip_pipeline_spec_from_task_spec(
         #pipeline_context=...,
     )
     root_component_spec = task_spec.component_ref.spec
+
+    # Filling in the pipeline arguments
     root_arguments = task_spec.arguments or {}
+    for input_spec in root_component_spec.inputs or []:
+        if input_spec.name not in root_arguments:
+            if input_spec.default is None:
+                raise ValueError('Missing argument for graph input "{}"'.format(input_spec.name))
+            root_arguments[input_spec.name] = input_spec.default
+
     for input_name, argument in root_arguments.items():
         if not isinstance(argument, str):
             raise TypeError()
