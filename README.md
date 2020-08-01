@@ -21,7 +21,7 @@ python3 -m pip install https://storage.googleapis.com/managed-pipeline-test-bugb
 
 ## Examples:
 
-Example using an existing KFP pipleine:
+Example using an existing KFP pipeline:
 ```python
 from kfp import components
 
